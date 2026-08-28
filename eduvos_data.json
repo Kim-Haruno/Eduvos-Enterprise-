@@ -1,0 +1,41 @@
+{
+  "registrations": [
+    [
+      "R001",
+      "McNeil",
+      "Python Enterprise Programming",
+      "Approved"
+    ],
+    [
+      "R002",
+      "Kulani",
+      "Concurrent Python Course",
+      "Approved"
+    ],
+    [
+      "R003",
+      "KIMBERLY",
+      "Concurrent Python Course",
+      "Approved"
+    ],
+    [
+      "R004",
+      "Saad",
+      "Concurrent Python Course",
+      "Rejected"
+    ],
+    [
+      "R005",
+      "Lindsay",
+      "Database Systems",
+      "Approved"
+    ],
+    [
+      "R006",
+      "Haonan",
+      "Java Programming",
+      "Approved"
+    ]
+  ],
+  "support_tickets": []
+}
