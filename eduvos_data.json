@@ -1,40 +1,32 @@
 {
+  "course_capacities": {
+    "Python Enterprise Programming": 2,
+    "Concurrent Python Course": 2
+  },
   "registrations": [
     [
       "R001",
       "McNeil",
       "Python Enterprise Programming",
-      "Approved"
+      "Pending"
     ],
     [
       "R002",
       "Kulani",
       "Concurrent Python Course",
-      "Approved"
+      "Pending"
     ],
     [
       "R003",
       "KIMBERLY",
       "Concurrent Python Course",
-      "Approved"
+      "Pending"
     ],
     [
       "R004",
       "Saad",
       "Concurrent Python Course",
-      "Rejected"
-    ],
-    [
-      "R005",
-      "Lindsay",
-      "Database Systems",
-      "Approved"
-    ],
-    [
-      "R006",
-      "Haonan",
-      "Java Programming",
-      "Approved"
+      "Pending"
     ]
   ],
   "support_tickets": []

@@ -1,19 +1,15 @@
+from typing import Protocol
+class AssessmentStrategy(Protocol):
+    def calculate(self, score: float) -> str | float:
+        ...
 class PercentageStrategy:
-    def calculate(self, mark):
-        return mark
-
-
-class PassFailStrategy:
-    def calculate(self, mark):
-        if mark >= 50:
-            return "Pass"
-        else:
-            return "Fail"
-
-
+    def calculate(self, score: float) -> float:
+        return score
+class ClassificationStrategy:
+    def calculate(self, score: float) -> str:
+        return "Pass" if score >= 50 else "Fail"
 class AssessmentCalculator:
-    def __init__(self, strategy):
+    def __init__(self, strategy: AssessmentStrategy) -> None:
         self.strategy = strategy
-
-    def calculateResult(self, mark):
-        return self.strategy.calculate(mark)
+    def calculateResult(self, score: float) -> str | float:
+        return self.strategy.calculate(score)

@@ -1,33 +1,56 @@
+from typing import TYPE_CHECKING
+
+from models.learner import Learner
+
+if TYPE_CHECKING:
+    from models.learner import Learner
+    from models.registration import Registration
+
+
 class Course:
-    def __init__(self, courseID, courseName, capacity):
-        self.validateCourse(courseID, courseName, capacity)
-
-        self.courseID = courseID
-        self.courseName = courseName
-        self.capacity = capacity
-        self.registeredLearners = []
-
-    def validateCourse(self, courseID, courseName, capacity):
-        if not courseID:
+    def __init__(self, courseID: str, courseName: str, capacity: int) -> None:
+        if not isinstance(courseID, str) or not courseID.strip():
             raise ValueError("Course ID cannot be empty.")
-
-        if not courseName:
+        if not isinstance(courseName, str) or not courseName.strip():
             raise ValueError("Course name cannot be empty.")
+        if (
+            not isinstance(capacity, int)
+            or isinstance(capacity, bool)
+            or capacity <= 0
+        ):
+            raise ValueError("Course capacity must be a positive integer.")
+        self.courseID = courseID.strip()
+        self.courseName = courseName.strip()
+        self.capacity = capacity
+        self.registeredLearners: list[Learner] = []
+        self.registrations: list[Registration] = []
 
-        if capacity <= 0:
-            raise ValueError("Course capacity must be greater than zero.")
+    @property
+    def ID(self) -> str:
+        return self.courseID
 
-    def addLearner(self, learner):
-        if len(self.registeredLearners) >= self.capacity:
-            print("Course is full.")
+    @property
+    def name(self) -> str:
+        return self.courseName
+
+    def addLearner(self, learner: Learner) -> bool:
+        if not isinstance(learner, Learner):
+            raise TypeError("learner must be a Learner instance.")
+        if learner in self.registeredLearners:
             return False
-
+        if len(self.registeredLearners) >= self.capacity:
+            return False
         self.registeredLearners.append(learner)
-        print(f"{learner.name} successfully registered for {self.courseName}.")
         return True
 
-    def displayInfo(self):
-        print("Course ID:", self.courseID)
-        print("Course Name:", self.courseName)
-        print("Capacity:", self.capacity)
-        print("Registered Learners:", len(self.registeredLearners))
+    def __str__(self) -> str:
+        return f"{self.courseID} - {self.courseName} ({len(self.registeredLearners)}/{self.capacity})"
+
+    def __repr__(self) -> str:
+        return f"Course({self.courseID!r}, {self.courseName!r}, {self.capacity!r})"
+
+    def displayInfo(self) -> None:
+        print(f"Course ID: {self.courseID}")
+        print(f"Course Name: {self.courseName}")
+        print(f"Capacity: {self.capacity}")
+        print(f"Registered Learners: {len(self.registeredLearners)}")

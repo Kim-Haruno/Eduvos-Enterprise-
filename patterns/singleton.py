@@ -1,17 +1,30 @@
+import threading
+from typing import Any
+
+
 class AppConfig:
-    _instance = None
 
-    def __new__(cls):
+    _instance: "AppConfig | None" = None
+    _lock = threading.Lock()
+    appName: str
+    version: str
+    environment: str
+
+    def __new__(cls) -> "AppConfig":
         if cls._instance is None:
-            cls._instance = super().__new__(cls)
-
-            cls._instance.appName = "Eduvos Enterprise Application"
-            cls._instance.version = "1.0"
-            cls._instance.environment = "Development"
-
+            with cls._lock:
+                if cls._instance is None:
+                    instance = super().__new__(cls)
+                    instance.app_name = "Eduvos Enterprise Application"
+                    instance.version = "1.0"
+                    instance.environment = "Development"
+                    cls._instance = instance
         return cls._instance
 
-    def displayConfig(self):
-        print("Application Name:", self.appName)
-        print("Version:", self.version)
-        print("Environment:", self.environment)
+    def get(self, key: str, default: Any = None) -> Any:
+        return getattr(self, key, default)
+
+    def displayConfig(self) -> None:
+        print(f"Application Name: {self.app_name}")
+        print(f"Version: {self.version}")
+        print(f"Environment: {self.environment}")

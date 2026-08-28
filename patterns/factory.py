@@ -1,58 +1,38 @@
-class TechnicalTicket:
-    def __init__(self, ticketID, learner, issue):
-        self.ticketID = ticketID
-        self.learner = learner
-        self.issue = issue
-        self.type = "Technical"
-
-    def displayInfo(self):
-        print("Ticket ID:", self.ticketID)
-        print("Type:", self.type)
-        print("Learner:", self.learner.name)
-        print("Issue:", self.issue)
+from models.learner import Learner
+from models.support_ticket import SupportTicket
 
 
-class RegistrationTicket:
-    def __init__(self, ticketID, learner, issue):
-        self.ticketID = ticketID
-        self.learner = learner
-        self.issue = issue
-        self.type = "Registration"
+class AcademicTicket(SupportTicket):
 
-    def displayInfo(self):
-        print("Ticket ID:", self.ticketID)
-        print("Type:", self.type)
-        print("Learner:", self.learner.name)
-        print("Issue:", self.issue)
+    ticket_type = "Academic"
 
 
-class AssessmentTicket:
-    def __init__(self, ticketID, learner, issue):
-        self.ticketID = ticketID
-        self.learner = learner
-        self.issue = issue
-        self.type = "Assessment"
+class TechnicalTicket(SupportTicket):
 
-    def displayInfo(self):
-        print("Ticket ID:", self.ticketID)
-        print("Type:", self.type)
-        print("Learner:", self.learner.name)
-        print("Issue:", self.issue)
+    ticket_type = "Technical"
+
+
+class RegistrationTicket(SupportTicket):
+
+    ticket_type = "Registration"
 
 
 class SupportTicketFactory:
 
+    ticketTypes: dict[str, type[SupportTicket]] = {
+        "academic": AcademicTicket,
+        "assessment": AcademicTicket,
+        "technical": TechnicalTicket,
+        "registration": RegistrationTicket,
+    }
+
     @staticmethod
-    def createTicket(ticketType, ticketID, learner, issue):
-
-        if ticketType == "technical":
-            return TechnicalTicket(ticketID, learner, issue)
-
-        elif ticketType == "registration":
-            return RegistrationTicket(ticketID, learner, issue)
-
-        elif ticketType == "assessment":
-            return AssessmentTicket(ticketID, learner, issue)
-
-        else:
+    def createTicket(
+        ticketType: str, ticketID: str, learner: Learner, issue: str
+    ) -> SupportTicket:
+        if not isinstance(ticketType, str) or not ticketType.strip():
+            raise ValueError("Support ticket type cannot be empty.")
+        ticketClass = SupportTicketFactory.ticketTypes.get(ticketType.strip().lower())
+        if ticketClass is None:
             raise ValueError("Invalid support ticket type.")
+        return ticketClass(ticketID, learner, issue)
